@@ -1,0 +1,31 @@
+{
+  "name": "personalproject",
+  "version": "1.0.0",
+  "description": "Personal Project for WDD330",
+  "main": "index.js",
+  "scripts": {
+    "build": "vite build --emptyOutDir",
+    "format": "prettier --ignore-path ./.gitignore --write \"./**/*.{html,json,js,ts,css}\"",
+    "lint": "eslint *.js src/**/*.js",
+    "preview": "vite preview",
+    "start": "vite",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Regalus27/WDD330Shiny.git"
+  },
+  "author": "Cooper Anderson",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Regalus27/WDD330Shiny/issues"
+  },
+  "homepage": "https://github.com/Regalus27/WDD330Shiny#readme",
+  "devDependencies": {
+    "eslint": "^8.56.0"
+  },
+  "dependencies": {
+    "prettier": "^3.2.5",
+    "vite": "^5.1.0"
+  }
+}
