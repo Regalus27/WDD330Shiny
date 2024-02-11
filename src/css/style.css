@@ -1,11 +1,38 @@
 :root {
-    --primary-color: #3C91E6;
-    --secondary-color: #4CB944;
-    --dark-color: #201c21;
-    --light-color: #DBD4D3;
+  --primary-color: #3c91e6;
+  --primary-color-greyed: #93c2f1;
+  --secondary-color: #4cb944;
+  --secondary-color-greyed: #b8e3b5;
+  --dark-color: #201c21;
+  --light-color: #dbd4d3;
 }
 
 body {
-    background-color: var(--dark-color);
-    color: var(--light-color);
+  background-color: var(--dark-color);
+  color: var(--light-color);
+}
+
+button {
+  background-color: var(--primary-color);
+  border: none;
+  color: var(--dark-color);
+  padding: 12px 28px;
+
+  transition-duration: 0.2s;
+}
+
+button:hover {
+  background-color: var(--secondary-color);
+  border: none;
+  color: var(--dark-color);
+}
+
+.greyed-button {
+  background-color: var(--primary-color-greyed);
+  color: var(--dark-color);
+}
+
+.greyed-button:hover {
+  background-color: var(--primary-color-greyed);
+  color: var(--dark-color);
 }
