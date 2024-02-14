@@ -27,12 +27,12 @@ button:hover {
   color: var(--dark-color);
 }
 
-.greyed-button {
+.greyed_button {
   background-color: var(--primary-color-greyed);
   color: var(--dark-color);
 }
 
-.greyed-button:hover {
+.greyed_button:hover {
   background-color: var(--primary-color-greyed);
   color: var(--dark-color);
 }

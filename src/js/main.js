@@ -1,8 +1,9 @@
 // API test
+const baseURL = import.meta.env.VITE_API_BASEURL;
 
-// This would be an environmental variable in other projects.
-const baseURL = "https://pokeapi.co/api/v2/";
-
+/**
+ * @param r - fetched data from API
+ */
 async function convertToJson(r) {
   let response = await r.json();
   if (r.ok) {
