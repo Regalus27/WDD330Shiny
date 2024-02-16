@@ -1,28 +1,51 @@
-import { getLocalStorage } from "./utils.mjs";
+import { getLocalStorage, renderUsingTemplate, renderWithoutTemplate } from "./utils.mjs";
 
 export default class HuntLoader {
     // Manages checking for and loading hunts from localStorage for HuntTracker
-    constructor(buttonID) {
+    constructor(dropdownParentElementId) {
         this.storageKey = import.meta.env.VITE_LOCALSTORAGE_KEY;
-        this.buttonID = buttonID;
+        this.dropdownParentElement = document.getElementById(dropdownParentElementId);
     }
 
     init() {
         // Check localstorage for hunts.
-        this.huntList = getLocalStorage(this.storageKey);
-        let buttonElement = document.getElementById(this.buttonID);
-
-        if (this.huntList != null) {
-            // bind function to button or setup proper template for buttons to insert
-            buttonElement.addEventListener("click", (e) => {
-
-            });
-            buttonElement.textContent = "Load Hunt";
-            buttonElement.classList.remove("greyed_button");
-        } else {
-            buttonElement.textContent = "No Hunts Found";
+        try{
+            this.huntList = getLocalStorage(this.storageKey);
+        } catch (e) {
+            this.huntList = null;
         }
+
+        this.openLoadHuntInterface();
     }
 
+    openLoadHuntInterface() {
+        if (this.huntList != null) {
+            renderUsingTemplate(huntDropdownTemplate, this.huntList, this.dropdownParentElement, true);
+            //bind button
+            const buttonElement = document.getElementById("load_hunt_button"); // See huntDropdownTemplate
+            buttonElement.textContent = "Load Hunt";
+        } else {
+            renderWithoutTemplate("No Hunts found.", this.dropdownParentElement, true);
+        }
+    }
+}
 
+/**
+ * Template function for dropdown selector to choose hunt
+ * Format: "Sandslash, 1234 encounters"
+ * @param {list} huntList - list of hunt objects to render in dropdown
+ */
+function huntDropdownTemplate(huntList) {
+    let output = `<label for="hunt_select">Choose a Hunt:</label>
+    <select name="hunts" id="hunt_select">
+    <option value="">--Select an option--</option>`;
+    if(huntList != null) {
+        huntList.forEach(hunt => {
+            output += `\n<option value="${hunt.getId()}">"${hunt.getTarget().name}, ${hunt.getEncounterCount()} encouters"</option>`;
+        });
+    }
+    output += `</select>`;
+    output += `<button id="load_hunt_button">Load Hunt</button>`;
+
+    return output;
 }
