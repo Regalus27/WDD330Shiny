@@ -1,6 +1,6 @@
 import APIHandler from "./APIHandler.mjs";
 import Hunt from "./Hunt.mjs";
-import LocationArea from "./LocationArea.mjs";
+import Encounter from "./Encounter.mjs";
 import { renderUsingTemplate } from "./utils.mjs";
 
 export default class HuntBuilder {
@@ -35,19 +35,19 @@ export default class HuntBuilder {
             // "hunt_location_div"
             let locationParentElement = document.getElementById("hunt_location_div");
             let locationData = await apiHandler.getData(`pokemon/${e.target.value}/encounters`);
-            console.log(locationData);
             let huntLocationAreaList = this.filterEncounterByVersion("red", locationData);
-            console.log(huntLocationAreaList[0].getName() + ", " + huntLocationAreaList[0].getVersionName());
-            console.log(huntLocationAreaList[0].getEncounters());
-            console.log(huntLocationAreaList.length);
-            
+
+            // console.log(huntLocationAreaList[0].getEncounterChance());
+
+            // make template to display encounter areas
+            // fill in similar to the other template
+            // then plan final display
+            // then expand to other generations, should be easy, generation 1-X from dropdown, choose version from dropdown
         });
 
         
 
         //------------
-        // add a change event listener to select
-        // add a new div to form for next step
         // chain is game (currently hard coded) (needs name for location choosing), pokemon, location
         // hunt needs id, primaryTarget, locationName, encounterList, encounterCount, deviceCount
         // id is date.now, Target (pokemon), locationName from locationArea, encounterlist (list Targets), encounter count (0), device count (prompt or edit in hunt screen)
@@ -56,18 +56,15 @@ export default class HuntBuilder {
     /**
      * @param versionName - name of game version to match
      * @param locationData - data returned by "pokemon/x/encounters"
-     * returns list of LocationAreas
+     * returns list of Encounter
      */
     filterEncounterByVersion(versionName, locationData) {
         let output = []
         locationData.forEach(element => {
             element.version_details.forEach((versionDetails) => {
-                console.log(versionDetails.version.name == versionName);
                 if(versionDetails.version.name == versionName) {
-                    let returnedLocationArea = new LocationArea(element.location_area.name, versionDetails.version.name, versionDetails);
-                    // create location object
-                    // version name, encounter details
-                    console.log(output.push(returnedLocationArea));
+                    let returnedLocationArea = new Encounter(element.location_area.name, element.location_area.url, versionDetails.version.name, versionDetails);
+                    output.push(returnedLocationArea);
                 }
             });
         });
