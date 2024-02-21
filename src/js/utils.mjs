@@ -1,5 +1,6 @@
 export function getBaseURL() {
-    return import.meta.env.VITE_API_BASEURL;
+    // Should be environmental variable but VITE isn't playing nice
+    return "https://pokeapi.co/api/v2/";
 }
 
 /**
@@ -10,7 +11,7 @@ export function getLocalStorage() {
 }
 
 export function getLocalStorageKey() {
-    return import.meta.env.VITE_LOCALSTORAGE_KEY;
+    return "regal_shiny_storage";
 }
 
 /**

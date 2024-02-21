@@ -11,4 +11,8 @@ export default class Target {
         this.encounterChance = encounterChance;
         this.numberShinyFound = numberShinyFound;
     }
+
+    getName() {
+        return this.name;
+    }
 }
