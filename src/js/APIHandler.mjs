@@ -5,7 +5,6 @@ export default class APIHandler {
         //TODO: Add error handling for convertToJson
         let response = await fetch(getBaseURL() + query);
         let data = await convertToJson(response);
-        console.log(data.pokemon_species);
         return data;
     }
 }
