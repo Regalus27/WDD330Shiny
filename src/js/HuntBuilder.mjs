@@ -45,10 +45,10 @@ export default class HuntBuilder {
                 let huntLocationName = document.getElementById("encounter_select").value;
                 let huntEncounterCount = 0;
                 let formHunt = new Hunt(huntID, huntTargetName, huntLocationName, huntEncounterCount);
-                addToLocalStorage(formHunt.getHuntStringed());
+                formHunt.saveHunt();
 
                 // navigate to load page and load the hunt
-                
+                window.location.href = "./load_hunt.html";
             }
         });
     }

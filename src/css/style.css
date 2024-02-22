@@ -1,10 +1,9 @@
 :root {
-  --primary-color: #3c91e6;
-  --primary-color-greyed: #93c2f1;
-  --secondary-color: #4cb944;
-  --secondary-color-greyed: #b8e3b5;
-  --dark-color: #201c21;
-  --light-color: #dbd4d3;
+  --primary-color: #2a2829;
+  --secondary-color: #d4770c;
+  --grey-color: #261602;
+  --dark-color: #141414;
+  --light-color: #e0e1e0;
 }
 
 body {
@@ -13,9 +12,9 @@ body {
 }
 
 button {
-  background-color: var(--primary-color);
+  background-color: var(--grey-color);
   border: none;
-  color: var(--dark-color);
+  color: var(--light-color);
   padding: 12px 28px;
 
   transition-duration: 0.2s;
@@ -27,12 +26,41 @@ button:hover {
   color: var(--dark-color);
 }
 
-.greyed_button {
-  background-color: var(--primary-color-greyed);
-  color: var(--dark-color);
+.container {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: stretch;
+  gap: 10px;
+  height: 100%;
 }
 
-.greyed_button:hover {
-  background-color: var(--primary-color-greyed);
-  color: var(--dark-color);
+.main_container {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: stretch;
+  gap: 10px;
+  height: 100%;
+}
+
+.card {
+  background-color: var(--dark-color);
+  outline: solid var(--secondary-color);
+  padding: 10px;
+  transition-duration: 0.2s;
+
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: center;
+  height: 1fr;
+}
+
+.card:hover {
+  background-color: var(--primary-color);
+}
+
+.card:active {
+  background-color: var(--grey-color);
 }

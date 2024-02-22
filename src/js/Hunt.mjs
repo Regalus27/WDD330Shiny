@@ -1,3 +1,5 @@
+import { addToLocalStorage } from "./utils.mjs";
+
 export default class Hunt {
     /**
      * Loaded Hunt (No API)
@@ -31,5 +33,15 @@ export default class Hunt {
 
     getHuntStringed() {
         return JSON.stringify({id: this.getId(), hunt: new Hunt(this.getId(), this.getTarget(), this.getLocationName(), this.getEncounterCount())});
+    }
+
+    incrementEncounterCount(count = 1) {
+        this.encounterCount += count;
+        this.saveHunt();
+        return this.encounterCount;
+    }
+
+    saveHunt() {
+        addToLocalStorage(this.getHuntStringed());
     }
 }
