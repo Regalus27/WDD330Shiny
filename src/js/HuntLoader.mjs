@@ -41,7 +41,7 @@ function huntDropdownTemplate(huntList) {
     <option value="">--Select an option--</option>`;
     if(huntList != null) {
         huntList.forEach(hunt => {
-            output += `\n<option value="${hunt.getId()}">"${hunt.getTarget().name}, ${hunt.getEncounterCount()} encouters"</option>`;
+            output += `\n<option value="${hunt.getId()}">"${hunt.getTarget().name}, ${hunt.getEncounterCount()} encounters"</option>`;
         });
     }
     output += `</select>`;

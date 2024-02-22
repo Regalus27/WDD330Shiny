@@ -37,8 +37,7 @@ export default class HuntBuilder {
             let locationData = await apiHandler.getData(`pokemon/${e.target.value}/encounters`);
             let huntLocationAreaList = this.filterEncounterByVersion("red", locationData);
 
-            // console.log(huntLocationAreaList[0].getEncounterChance());
-
+            renderUsingTemplate(huntBuilderEncounterTemplate, huntLocationAreaList, locationParentElement, true);
             // make template to display encounter areas
             // fill in similar to the other template
             // then plan final display
@@ -73,11 +72,32 @@ export default class HuntBuilder {
 }
 
 /**
+ * @param {list<Encounter>}encounterList - list of encounters to render
+ */
+function huntBuilderEncounterTemplate(encounterList) {
+    let output = `<label for="encounter_select">Hunt Details</label>
+    <select id="encounter_select">
+    <option value="">----</option>`;
+
+    encounterList.forEach(encounter => {
+        let encounterArea = encounter.getName();
+        let encounterURL = encounter.getURL();
+        let encounterChance = encounter.getEncounterChance();
+
+        output += `<option value="${encounterURL}">${encounterChance}% (${encounterArea})</option>`;
+    });
+
+    output += `</select>`;
+
+    return output;
+}
+
+/**
  * @param {list} pokemonList - List of pokemon pulled from api to display in a select
  */
 function huntBuilderPokemonTemplate(pokemonList) {
     let output = `<label for="hunt_select">Hunt Details</label>
-    <select id="hunt_select" placeholder="Field Textarea">
+    <select id="hunt_select">
     <option value="">----</option>`;
 
     pokemonList.forEach(element => {
