@@ -14,9 +14,6 @@ export default class HuntBuilder {
     async init() {
         let apiHandler = new APIHandler();
 
-        // get list of games (going to artificially limit it to generation 1 to limit number of calls while testing
-        // once rest works, this needs to have a generation select, and store which versions that generation has in it
-        // screw this head hurts too much - take list of gen 1 pokemon and show all spots you can shiny hunt for it
         const game = 1;
 
         //get list of pokemon
@@ -30,18 +27,15 @@ export default class HuntBuilder {
         renderUsingTemplate(huntBuilderPokemonTemplate, pokemonList, this.parentElement, true);
 
         document.getElementById("hunt_select").addEventListener("change", async (e) => {
-            // on update pokemon select, pull location area list
-            // sort using game name
-            // "hunt_location_div"
             let locationParentElement = document.getElementById("hunt_location_div");
             let locationData = await apiHandler.getData(`pokemon/${e.target.value}/encounters`);
-            let huntLocationAreaList = this.filterEncounterByVersion("red", locationData);
+            let huntLocationAreaList = this.filterEncounterByVersion("red", locationData); // HEY YOU CAN'T CHANGE GAMES BECAUSE YOU HARDCODED A VALUE HERE
 
             renderUsingTemplate(huntBuilderEncounterTemplate, huntLocationAreaList, locationParentElement, true);
-            // make template to display encounter areas
-            // fill in similar to the other template
+            // update the vite config js to add new pages!
+            // build a hunt using this data
             // then plan final display
-            // then expand to other generations, should be easy, generation 1-X from dropdown, choose version from dropdown
+            // then expand to other generations, should be easy, generation 1-X from dropdown, choose version from dropdown, then feed that into just before what is already here
         });
 
         
