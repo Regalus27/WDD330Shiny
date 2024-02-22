@@ -9,6 +9,7 @@ export default defineConfig({
       input: {
         main: resolve(__dirname, "src/index.html"),
         new_hunt: resolve(__dirname, "src/new_hunt.html"),
+        load_hunt: resolve(__dirname, "src/load_hunt.html"),
       },
     },
   },

@@ -3,14 +3,27 @@ export function getBaseURL() {
     return "https://pokeapi.co/api/v2/";
 }
 
+export function addToLocalStorage(stringifiedData) {
+    let dataObject = JSON.parse(stringifiedData);
+    let oldStorage = getLocalStorage();
+    let newStorage = [];
+    if (oldStorage != null) {
+        newStorage = oldStorage.filter((element) => {
+            element.id != dataObject.id;
+        });
+    }
+    newStorage.push(dataObject);
+    setLocalStorage(newStorage);
+}
+
 /**
  * Returns localStorage parsed as a JSON
  */
 export function getLocalStorage() {
-    return JSON.parse(localStorage.getItem());
+    return JSON.parse(localStorage.getItem(getLocalStorageKey()));
 }
 
-export function getLocalStorageKey() {
+function getLocalStorageKey() {
     return "regal_shiny_storage";
 }
 
@@ -50,4 +63,9 @@ export function renderWithoutTemplate(
             parentElement.replaceChildren();
         }
         parentElement.insertAdjacentHTML(position, data);
+}
+
+function setLocalStorage(data) {
+    let key = getLocalStorageKey();
+    localStorage.setItem(key, JSON.stringify(data));
 }

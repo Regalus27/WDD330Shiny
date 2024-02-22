@@ -1,7 +1,7 @@
 import APIHandler from "./APIHandler.mjs";
 import Hunt from "./Hunt.mjs";
 import Encounter from "./Encounter.mjs";
-import { renderUsingTemplate } from "./utils.mjs";
+import { addToLocalStorage, renderUsingTemplate, renderWithoutTemplate } from "./utils.mjs";
 
 export default class HuntBuilder {
     /**
@@ -15,6 +15,8 @@ export default class HuntBuilder {
         let apiHandler = new APIHandler();
 
         const game = 1;
+        let gameName = "red";
+        let huntEncounterList = [];
 
         //get list of pokemon
         let pokemonData = await apiHandler.getData(`generation/${game}`);
@@ -26,24 +28,29 @@ export default class HuntBuilder {
         // update form
         renderUsingTemplate(huntBuilderPokemonTemplate, pokemonList, this.parentElement, true);
 
+        // All of this is terrible.
         document.getElementById("hunt_select").addEventListener("change", async (e) => {
             let locationParentElement = document.getElementById("hunt_location_div");
             let locationData = await apiHandler.getData(`pokemon/${e.target.value}/encounters`);
-            let huntLocationAreaList = this.filterEncounterByVersion("red", locationData); // HEY YOU CAN'T CHANGE GAMES BECAUSE YOU HARDCODED A VALUE HERE
+            huntEncounterList = this.filterEncounterByVersion(gameName, locationData);
 
-            renderUsingTemplate(huntBuilderEncounterTemplate, huntLocationAreaList, locationParentElement, true);
-            // update the vite config js to add new pages!
-            // build a hunt using this data
-            // then plan final display
-            // then expand to other generations, should be easy, generation 1-X from dropdown, choose version from dropdown, then feed that into just before what is already here
+            renderUsingTemplate(huntBuilderEncounterTemplate, huntEncounterList, locationParentElement, true);
+
+            let form = document.getElementById("huntForm");
+            form.onsubmit = (formEvent) => {
+                formEvent.preventDefault();
+
+                let huntID = Date.now();
+                let huntTargetName = document.getElementById("hunt_select").value;
+                let huntLocationName = document.getElementById("encounter_select").value;
+                let huntEncounterCount = 0;
+                let formHunt = new Hunt(huntID, huntTargetName, huntLocationName, huntEncounterCount);
+                addToLocalStorage(formHunt.getHuntStringed());
+
+                // navigate to load page and load the hunt
+                
+            }
         });
-
-        
-
-        //------------
-        // chain is game (currently hard coded) (needs name for location choosing), pokemon, location
-        // hunt needs id, primaryTarget, locationName, encounterList, encounterCount, deviceCount
-        // id is date.now, Target (pokemon), locationName from locationArea, encounterlist (list Targets), encounter count (0), device count (prompt or edit in hunt screen)
     }
 
     /**
@@ -69,19 +76,23 @@ export default class HuntBuilder {
  * @param {list<Encounter>}encounterList - list of encounters to render
  */
 function huntBuilderEncounterTemplate(encounterList) {
+    let list = encounterList;
     let output = `<label for="encounter_select">Hunt Details</label>
-    <select id="encounter_select">
-    <option value="">----</option>`;
+    <select required name="encounter_select" id="encounter_select">
+    <option value>----</option>`;
 
-    encounterList.forEach(encounter => {
-        let encounterArea = encounter.getName();
-        let encounterURL = encounter.getURL();
-        let encounterChance = encounter.getEncounterChance();
+    if (list.length > 1) {
+        list.forEach(encounter => {
+            let encounterArea = encounter.getName();
+            let encounterChance = encounter.getEncounterChance();
 
-        output += `<option value="${encounterURL}">${encounterChance}% (${encounterArea})</option>`;
-    });
-
-    output += `</select>`;
+            output += `<option value="${encounterArea}">${encounterChance}% (${encounterArea})</option>`;
+        });
+    } else {
+        output += `<option value>No Encounters Found</option>`;
+    }
+    output += `</select>
+    <button type="submit" id="form_submit">Submit</button>`;
 
     return output;
 }
@@ -91,8 +102,8 @@ function huntBuilderEncounterTemplate(encounterList) {
  */
 function huntBuilderPokemonTemplate(pokemonList) {
     let output = `<label for="hunt_select">Hunt Details</label>
-    <select id="hunt_select">
-    <option value="">----</option>`;
+    <select required name="hunt_select" id="hunt_select">
+    <option value>----</option>`;
 
     pokemonList.forEach(element => {
         let pokemonName = element.name;

@@ -4,29 +4,17 @@ export default class Hunt {
      * @param id
      * @param {Target} primaryTarget
      * @param {string} locationName
-     * @param encounterList - list of possible encounters in an area, list of Target
      * @param {Number} encounterCount - number of encounters so far in the hunt, NOT related to encounterList
-     * @param {Number} deviceCount - number of simultaneous encounters
      */
-    constructor(id, primaryTarget, locationName, encounterList, encounterCount, deviceCount = 1) {
+    constructor(id, primaryTarget, locationName, encounterCount) {
         this.id = id;
         this.primaryTarget = primaryTarget;
         this.locationName = locationName;
-        this.encounterList = encounterList;
         this.encounterCount = encounterCount;
-        this.deviceCount = deviceCount;
-    }
-    
-    getDeviceCount() {
-        return this.deviceCount;
     }
 
     getEncounterCount() {
         return this.encounterCount;
-    }
-
-    getEncounterList() {
-        return this.encounterList;
     }
 
     getId() {
@@ -38,6 +26,10 @@ export default class Hunt {
     }
 
     getTarget() {
-        return this.primaryTarget();
+        return this.primaryTarget;
+    }
+
+    getHuntStringed() {
+        return JSON.stringify({id: this.getId(), hunt: new Hunt(this.getId(), this.getTarget(), this.getLocationName(), this.getEncounterCount())});
     }
 }
